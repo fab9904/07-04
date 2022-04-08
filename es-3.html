@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
+        <title>¡Usemos Bootstrap!</title>
+    </head>
+    <body>
+        <div class="container-fluid min-vh-100">
+            <header class="row">
+                <div class="col-10 col-lg-11">
+                    <p class="mt-2 mb-1"><a href="es.html" class="link-danger">Portada</a></p>
+                </div>
+                <div class="col-2 col-lg-1 text-end">
+                    <p class="mt-2 mb-1 d-flex justify-content-between"><a href="es-1.html">1</a> <a href="es-2.html">2</a> <a href="es-3.html">3</a></p>
+                </div>
+            </header>
+            <main class="row g-0" style="height: 85vh;">
+                <div class="col-6" id="aqui"></div>
+            </main>
+            <footer class="row">
+                <div class="col">
+                    <p class="mt-3 mb-auto text-center text-muted small">Este es un párrafo centrado, con letra muteada y chica.</p>
+                </div>
+            </footer>
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.1/p5.min.js" integrity="sha512-NxocnqsXP3zm0Xb42zqVMvjQIktKEpTIbCXXyhBPxqGZHqhcOXHs4pXI/GoZ8lE+2NJONRifuBpi9DxC58L0Lw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script>
+            var x, y;
+            var espacio = document.querySelector("main");
+            let spots, arm;
+
+  function setup() {
+    createCanvas(1000, 700);
+    x = espacio.offsetWidth;
+    y = espacio.offsetHeight;
+    createCanvas(x, y).parent("aqui");
+    arm = new SpinArm(width/2, height/2, 0.01);
+    spots = new SpinSpots(width/2, height/2, -0.02, 90.0);
+  }
+
+  function draw() {
+    background(121,205,205);
+    arm.update();
+    arm.display();
+    spots.update();
+    spots.display();
+  }
+
+  class Spin {
+    constructor(x, y, s) {
+      this.x = x;
+      this.y = y;
+      this.speed = s;
+      this.angle = 0.0;
+    }
+
+    update() {
+      this.angle += this.speed;
+    }
+  }
+
+  class SpinArm extends Spin {
+    constructor(x, y, s) {
+      super(x, y, s)
+    }
+
+    display() {
+      strokeWeight(1);
+      stroke(0);
+      push();
+      translate(this.x, this.y);
+      this.angle += this.speed;
+      rotate(this.angle);
+      line(0, 0, 165, 0);
+      pop();
+    }
+  }
+
+  class SpinSpots extends Spin {
+    constructor(x, y, s, d) {
+      super(x, y, s)
+      this.dim = d;
+    }
+
+    display() {
+      noStroke();
+      push();
+      translate(this.x, this.y);
+      this.angle += this.speed;
+      rotate(this.angle);
+      ellipse(-this.dim/2, 0, this.dim, this.dim);
+      ellipse(this.dim/2, 0, this.dim, this.dim);
+      pop();
+    }
+  }
+            function windowResized() {
+                x = espacio.offsetWidth;
+                y = espacio.offsetHeight;
+                resizeCanvas(x, y);
+            }
+        </script>
+    </body>
+</html>

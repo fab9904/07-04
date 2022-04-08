@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
+        <title>¡Usemos Bootstrap!</title>
+    </head>
+    <body>
+        <div class="container min-vh-100">
+            <header class="row">
+                <div class="col-10 col-lg-11">
+                    <p class="mt-2 mb-1"><a href="es.html" class="link-danger">Portada</a></p>
+                </div>
+                <div class="col-2 col-lg-1 text-end">
+                    <p class="mt-2 mb-1 d-flex justify-content-between"><a href="es-1.html">1</a> <a href="es-2.html">2</a> <a href="es-3.html">3</a></p>
+                </div>
+            </header>
+            <div class="row">
+            <main class="col-6 col-sm-4" style="height: 85vh;">
+                <div id="aqui"></div>
+            </main>
+            <aside class="col-6 col-sm-8">
+              <p class="mt-3 mb-auto text-center text-muted">Literal, alguna  cosa.</p>
+              </aside>
+              </div>
+            <footer class="row">
+                <div class="col">
+                    <p class="mt-3 mb-auto text-center text-muted small">Este es un párrafo centrado, con letra muteada y chica.</p>
+                </div>
+            </footer>
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.1/p5.min.js" integrity="sha512-NxocnqsXP3zm0Xb42zqVMvjQIktKEpTIbCXXyhBPxqGZHqhcOXHs4pXI/GoZ8lE+2NJONRifuBpi9DxC58L0Lw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script>
+          var x, y;
+          var espacio = document.querySelector("main");
+          let theta;
+
+  function setup() {
+      createCanvas(1000, 800, 1);
+      x = espacio.offsetWidth;
+        y = espacio.offsetHeight;
+        createCanvas(x, y).parent("aqui");
+        noStroke();
+        fill(255);
+  }
+
+  function draw() {
+      background(0);
+      frameRate(30);
+      stroke(255);
+      // Let's pick an angle 0 to 90 degrees based on the mouse position
+      let a = (mouseX / width) * 90;
+      // Convert it to radians
+      theta = radians(a);
+      // Start the tree from the bottom of the screen
+      translate(width / 2, height);
+      // Draw a line 120 pixels
+      line(0, 0, 0, -120);
+      // Move to the end of that line
+      translate(0, -120);
+      // Start the recursive branching!
+      branch(120);
+  }
+
+  function branch(h) {
+      // Each branch will be 2/3rds the size of the previous one
+      h *= 0.66;
+
+      // All recursive functions must have an exit condition!!!!
+      // Here, ours is when the length of the branch is 2 pixels or less
+      if (h > 2) {
+          push(); // Save the current state of transformation (i.e. where are we now)
+          rotate(theta); // Rotate by theta
+          line(0, 0, 0, -h); // Draw the branch
+          translate(0, -h); // Move to the end of the branch
+          branch(h); // Ok, now call myself to draw two new branches!!
+          pop(); // Whenever we get back here, we "pop" in order to restore the previous matrix state
+
+          // Repeat the same thing, only branch off to the "left" this time!
+          push();
+          rotate(-theta);
+          line(0, 0, 0, -h);
+          translate(0, -h);
+          branch(h);
+          pop();
+      }
+  }
+            function windowResized() {
+                x = espacio.offsetWidth;
+                y = espacio.offsetHeight;
+                resizeCanvas(x, y);
+            }
+        </script>
+    </body>
+</html>
